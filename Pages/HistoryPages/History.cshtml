@@ -1,0 +1,35 @@
+﻿@page
+@model WaterMonitor.Pages.HistoryPages.HistoryModel
+@{
+	ViewData["Title"] = "History";
+}
+
+<div class="md-3">
+    <h3>Measurement history</h3>
+    <hr>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Station</th>
+                <th scope="col">Water level value</th>
+                <th scope="col">Time stamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Measurements)
+            {
+                <tr>
+                    <th scope="row">@item.Station?.Title</th>
+                    <td>@item.Value</td>
+                    <td>@item.TimeStamp</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    setTimeout(function () {
+        window.location.reload();
+    }, 5000);
+</script>

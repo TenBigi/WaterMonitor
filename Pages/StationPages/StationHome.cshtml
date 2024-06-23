@@ -1,0 +1,32 @@
+﻿@page
+@model WaterMonitor.Pages.StationPages.StationHomeModel
+@{
+    ViewData["Title"] = "Stations";
+}
+
+<div class="md-3">
+    <h3>Current active stations: @Model.Stations.Count()</h3>
+    <a class="nav-link text-dark" asp-area="" asp-page="/StationPages/AddStationForm">Add new station</a>
+    <hr>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Flood warning level</th>
+                <th scope="col">Drought warning level</th>
+                <th scope="col">Created by</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Stations)
+            {
+                <tr>
+                    <th scope="row">@item.Title</th>
+                    <td>@item.FloodWarningvalue</td>
+                    <td>@item.DroughWarningValue</td>
+                    <td>@item.CreatedByUser</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,26 @@
+﻿@page
+@model WaterMonitor.Pages.ConfigurationModel
+@{
+	ViewData["Title"] = "Configuration";
+}
+
+<div class="container">
+	<div class="row">
+		<div class="col"></div>
+		<div class="col-6">
+			<h2>App configuration</h2>
+			<hr>
+			<form method="post" enctype="text/plain">
+				<div class="form-group">
+					@foreach (var config in Model.Configs)
+					{
+						<label for="value">@config.Key</label>
+						<input asp-for="@config.Value" type="text" class="form-control" id="value">
+						<span asp-validation-for="@config.Value" class="text-danger"></span>
+					}
+				</div>
+				<button class="btn btn-primary mt-4" type="submit">Save changes</button>
+			</form>
+		</div>
+	</div>
+</div>
