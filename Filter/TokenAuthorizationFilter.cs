@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WaterMonitor.Data;
-using WaterMonitor.Data.Model;
+using WaterMonitor.Data.Model; 
 
 namespace WaterMonitor.Filters
 {
@@ -14,7 +14,7 @@ namespace WaterMonitor.Filters
             var dbContext = context.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
             var recievedToken = context.HttpContext.Request.Headers["Security-Token"].FirstOrDefault();
 
-            if (!dbContext.Configuration.Any(x => x.Value == recievedToken) || string.IsNullOrEmpty(recievedToken))
+            if (string.IsNullOrEmpty(recievedToken) || recievedToken != dbContext.Tokens.OrderByDescending(t => t.CreatedAt).FirstOrDefault().Token)
             {
                 context.Result = new UnauthorizedResult();
                 return;

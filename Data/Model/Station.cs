@@ -7,9 +7,10 @@ namespace WaterMonitor.Data.Model
         [Key]
         public int Id { get; set; }
         public string? Title { get; set; }
-
         public int FloodWarningvalue { get; set; }
         public int DroughWarningValue { get; set; }
+        public int UnknownStateMinTime { get; set; }
+        public DateTime LastMeasurementRecievedTime { get; set; }
         public string? CreatedByUser { get; set; }
         public DateTime CreatedOn { get; set; }    
     }

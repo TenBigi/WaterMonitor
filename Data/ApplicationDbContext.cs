@@ -8,6 +8,7 @@ namespace WaterMonitor.Data
     {
         public DbSet<Station> Stations { get; set; }
         public DbSet<StationMeasurement> Measurements { get; set; }
-        public DbSet<Config> Configuration {  get; set; }
+        public DbSet<SmtpConfig> SmtpConfigs {  get; set; }
+        public DbSet<AuthorizationToken> Tokens { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace WaterMonitor.Data.Model
 {
     public class GenericPageModel : PageModel
     {
-        internal ApplicationDbContext ApplicationDbContext;
+        internal ApplicationDbContext _context;
         public string Message { get; set; } = string.Empty;
     }
 }

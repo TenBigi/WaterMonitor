@@ -1,32 +1,147 @@
-﻿@page
+﻿@page "{id:int?}"
 @model WaterMonitor.Pages.StationPages.StationHomeModel
 @{
     ViewData["Title"] = "Stations";
 }
 
-<div class="md-3">
-    <h3>Current active stations: @Model.Stations.Count()</h3>
-    <a class="nav-link text-dark" asp-area="" asp-page="/StationPages/AddStationForm">Add new station</a>
-    <hr>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Flood warning level</th>
-                <th scope="col">Drought warning level</th>
-                <th scope="col">Created by</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Stations)
-            {
-                <tr>
-                    <th scope="row">@item.Title</th>
-                    <td>@item.FloodWarningvalue</td>
-                    <td>@item.DroughWarningValue</td>
-                    <td>@item.CreatedByUser</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<style>
+    .bg-light-green {
+        background-color: lightgreen;
+    }
+
+    .bg-light-red {
+        background-color: lightcoral;
+    }
+</style>
+
+<div class="container-fluid p-0 bg-dark" style="overflow: hidden; height: 87vh">
+    <div class="row no-gutters">
+        <div class="col-auto bg-dark vh-100 border border-right border-top-0" style="width: 15%; padding-left: 24px; overflow-y: auto">
+            <h3 class="mb-4 mt-4 text-white">Current active stations: @Model.Stations.Count</h3>
+            <a class="btn btn-primary mb-3 w-100" asp-area="" asp-page="/StationPages/AddStationForm">Add new station</a>
+            <div class="list-group">
+                @foreach (var station in Model.Stations)
+                {
+                    <form method="get" action="" class="w-100">
+                        <input type="hidden" name="id" value="@station.Id" />
+                        <button type="submit" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center w-100 @GetBackgroundColor(station.LastMeasurementValue, station.FloodWarningvalue, station.DroughWarningValue)">
+                            <div>
+                                <h5 class="mb-0">@station.Title</h5>
+                                <small>Last Measurement: @station.LastMeasurementValue</small>
+                            </div>
+                            <span class="badge badge-primary badge-pill">@station.LastMeasurementValue</span>
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+        <div class="col vh-100" style="padding-right: 27px">
+            <div class="mb-2" style="height: 45vh; overflow-y: auto;">
+                @if (Model.SelectedStationMeasurements != null && Model.SelectedStationMeasurements.Any())
+                {
+                    <table class="table table-striped table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var measurement in Model.SelectedStationMeasurements)
+                            {
+                                <tr>
+                                    <td>@measurement.TimeStamp</td>
+                                    <td>@measurement.Value</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+            <div class="settings-container">
+                @if (Model.SelectedStationId.HasValue)
+                {
+                    var selectedStation = Model.Stations.FirstOrDefault(s => s.Id == Model.SelectedStationId);
+                    if (selectedStation != null)
+                    {
+                        <div class="card">
+                            <div class="card-header bg-dark">
+                                <h4 class="text-center text-white">Station Settings for @selectedStation.Title</h4>
+                            </div>
+                            <div class="card-body bg-dark text-white">
+                                <form method="post" asp-page-handler="SaveSettings">
+                                    <input type="hidden" asp-for="SelectedStationId" />
+                                    <div class="mb-3 d-flex">
+                                        <div class="me-3">
+                                            <label class="form-label">Flood Warning Level</label>
+                                            <input asp-for="SelectedStation.FloodWarningvalue" class="form-control form-control-sm w-100 bg-secondary" value="@selectedStation.FloodWarningvalue" />
+                                            <span asp-validation-for="SelectedStation.FloodWarningvalue" class="text-danger"></span>
+                                        </div>
+                                        <div>
+                                            <label class="form-label">Drought Warning Level</label>
+                                            <input asp-for="SelectedStation.DroughWarningValue" class="form-control form-control-sm w-100 bg-secondary" value="@selectedStation.DroughWarningValue" />
+                                            <span asp-validation-for="SelectedStation.DroughWarningValue" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Unknown State Minimum Time (Minutes)</label>
+                                        <input asp-for="SelectedStation.UnknownStateMinTime" class="form-control form-control-sm w-25 bg-secondary" value="@selectedStation.UnknownStateMinTime" />
+                                        <span asp-validation-for="SelectedStation.UnknownStateMinTime" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3 d-flex">
+                                        <div class="me-3">
+                                            <label class="form-label text-light">Created By</label>
+                                            <div class="form-control-plaintext text-white">@selectedStation.CreatedByUser</div>
+                                        </div>
+                                        <div>
+                                            <label class="form-label text-light">Created On</label>
+                                            <div class="form-control-plaintext text-white">@selectedStation.CreatedOn.ToString("yyyy-MM-dd")</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-primary btn-sm" onclick="saveSettings(@selectedStation.Id)">Save Settings</button>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeStation(@selectedStation.Id)">Remove Station</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    function removeStation(stationId) {
+        if (confirm('Are you sure you want to remove this station?')) {
+            $.ajax({
+                type: 'POST',
+                url: '/StationPages/StationHome?id=' + stationId + '&handler=RemoveStation',
+                headers: {
+                    RequestVerificationToken: $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    location.reload();
+                },
+                error: function () {
+                    alert('Error removing station.');
+                }
+            });
+        }
+    }
+</script>
+
+@functions {
+    string GetBackgroundColor(int lastMeasurement, int floodWarningLevel, int droughWarningLevel)
+    {
+        if (lastMeasurement >= droughWarningLevel && lastMeasurement <= floodWarningLevel)
+        {
+            return "bg-light-green";
+        }
+        else
+        {
+            return "bg-light-red";
+        }
+    }
+}

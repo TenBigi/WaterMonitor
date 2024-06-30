@@ -13,12 +13,12 @@ namespace WaterMonitor.Pages.HistoryPages
         public List<StationMeasurement> Measurements { get; set; } = [];
         public HistoryModel(ApplicationDbContext context)
         {
-            ApplicationDbContext = context;
+            _context = context;
         }
         
         public void OnGet()
         {
-            Measurements = ApplicationDbContext.Measurements.Include(x => x.Station).ToList();
+            Measurements = _context.Measurements.Include(x => x.Station).ToList();
         }
     }
 }

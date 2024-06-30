@@ -1,0 +1,49 @@
+﻿@page
+@model WaterMonitor.Pages.ConfigurationPages.TokenConfigModel
+@{
+    ViewData["Title"] = "Token Configuration";
+}
+
+<div class="container mt-5 bg-dark">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-dark">
+                <div class="card-header">
+                    <h2 class="text-center text-white">Token Configuration</h2>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <form method="post">
+                            <label for="tokenField" class="text-white mb-2">Generated Token:</label>
+                            <input type="text" class="form-control mb-3 bg-secondary text-white" id="tokenField" readonly="readonly" asp-for="GeneratedToken">
+                            <button type="submit" class="btn btn-primary" asp-page-handler="GenerateToken">Generate Token</button>
+                        </form>
+                    </div>
+                    <div class="mt-4">
+                        <h3 class="text-white">Last 10 Tokens</h3>
+                        <table class="table table-dark table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Token</th>
+                                    <th>Created At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var token in Model.LastTenTokens)
+                                {
+                                    <tr>
+                                        <td>@token.Token</td>
+                                        <td>@token.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

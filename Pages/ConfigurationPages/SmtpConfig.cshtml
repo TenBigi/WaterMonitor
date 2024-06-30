@@ -1,0 +1,49 @@
+﻿@page
+@model WaterMonitor.Pages.ConfigurationPages.SmtpConfigModel
+@{
+    ViewData["Title"] = "SMTP Configuration";
+}
+
+<div class="container mt-5 bg-dark">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-dark">
+                <div class="card-header">
+                    <h2 class="text-center text-white">SMTP Configuration</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" >
+                        <div class="mb-3">
+                            <label class="form-label text-light">SMTP Server</label>
+                            <input asp-for="SmtpConfig.Server" class="form-control bg-secondary" id="smtpServer">
+                            <span asp-validation-for="SmtpConfig.Server" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-light">SMTP Port</label>
+                            <input asp-for="SmtpConfig.Port" class="form-control bg-secondary text-white" id="smtpPort">
+                            <span asp-validation-for="SmtpConfig.Port" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-light">SMTP Username</label>
+                            <input asp-for="SmtpConfig.Username" class="form-control bg-secondary text-white" id="smtpUsername">
+                            <span asp-validation-for="SmtpConfig.Username" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-light">SMTP Password</label>
+                            <input asp-for="SmtpConfig.Password" class="form-control bg-secondary text-white" id="smtpPassword">
+                            <span asp-validation-for="SmtpConfig.Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-light">Sender Address</label>
+                            <input asp-for="SmtpConfig.FromAddress" class="form-control bg-secondary text-white" id="fromEmail">
+                            <span asp-validation-for="SmtpConfig.FromAddress" class="text-danger"></span>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-sm btn-primary">Save SMTP Settings</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

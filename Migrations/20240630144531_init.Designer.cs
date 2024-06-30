@@ -12,15 +12,15 @@ using WaterMonitor.Data;
 namespace WaterMonitor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240216102131_AddedConfig")]
-    partial class AddedConfig
+    [Migration("20240630144531_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -227,18 +227,36 @@ namespace WaterMonitor.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WaterMonitor.Data.Model.Config", b =>
+            modelBuilder.Entity("WaterMonitor.Data.Model.SmtpConfig", b =>
                 {
-                    b.Property<string>("Key")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Value")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FromAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Key");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Configuration");
+                    b.Property<int>("Port")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Server")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SmtpConfigs");
                 });
 
             modelBuilder.Entity("WaterMonitor.Data.Model.Station", b =>
@@ -263,6 +281,9 @@ namespace WaterMonitor.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UnknownStateMinTime")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

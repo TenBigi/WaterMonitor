@@ -14,7 +14,7 @@ namespace WaterMonitor.Pages.StationPages
 
         public AddStationFormModel(ApplicationDbContext context)
         {
-            ApplicationDbContext = context;
+            _context = context;
         }
 
         public IActionResult OnPost()
@@ -26,15 +26,11 @@ namespace WaterMonitor.Pages.StationPages
 
             //osetreni - max level > min level
             Station.CreatedOn = DateTime.Now;
-            ApplicationDbContext.Stations.Add(Station);
-            ApplicationDbContext.SaveChanges();
+            _context.Stations.Add(Station);
+            _context.SaveChanges();
             Station = new();
             ModelState.Clear();
             return Page();
-        }
-
-        public void OnGet()
-        {
         }
     }
 }

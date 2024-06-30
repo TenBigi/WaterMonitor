@@ -4,29 +4,40 @@
 	ViewData["Title"] = "Add station";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col"></div>
-        <div class="col-6">
-            <h3>Add new station</h3>
-            <hr>
-            <form method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input asp-for="Station.Title" type="text" class="form-control" id="title" placeholder="Title">
-                    <span asp-validation-for="Station.Title" class="text-danger"></span>
-                    <br>
-                    <input asp-for="Station.FloodWarningvalue" type="text" class="form-control" id="flood" placeholder="Flood warning level">
-                    <span asp-validation-for="Station.FloodWarningvalue" class="text-danger"></span>
-                    <br>
-                    <input asp-for="Station.DroughWarningValue" type="number" class="form-control" id="flood" placeholder="Drought warning level">
-                    <span asp-validation-for="Station.DroughWarningValue" class="text-danger"></span>
-                    <br>
-                    <input asp-for="Station.CreatedByUser" type="text" class="form-control" id="user" placeholder="User (temporary)">
-                    <span asp-validation-for="Station.CreatedByUser" class="text-danger"></span>
+<div class="container mt-5 bg-dark">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card bg-dark">
+                <div class="card-header">
+                    <h2 class="text-center text-white">Add new station</h2>
                 </div>
-                <button class="btn btn-primary mt-4" type="submit">Create</button>
-            </form>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label class="form-label text-white">Station name</label>
+                            <input asp-for="Station.Title" type="text" class="form-control bg-secondary text-white">
+                            <span asp-validation-for="Station.Title" class="text-danger"></span>
+                            <br>
+                            <label class="form-label text-white">Flood warning value</label>
+                            <input asp-for="Station.FloodWarningvalue" type="text" class="form-control bg-secondary text-white">
+                            <span asp-validation-for="Station.FloodWarningvalue" class="text-danger"></span>
+                            <br>
+                            <label class="form-label text-white">Drought warning value</label>
+                            <input asp-for="Station.DroughWarningValue" type="number" class="form-control bg-secondary text-white">
+                            <span asp-validation-for="Station.DroughWarningValue" class="text-danger"></span>
+                            <br>
+                            <label class="form-label text-white">Unknown status minimum time</label>
+                            <input asp-for="Station.UnknownStateMinTime" type="text" class="form-control bg-secondary text-white">
+                            <span asp-validation-for="Station.UnknownStateMinTime" class="text-danger"></span>
+                            <br>
+                            <label class="form-label text-white">Created by</label>
+                            <input asp-for="Station.CreatedByUser" type="text" class="form-control bg-secondary text-white">
+                            <span asp-validation-for="Station.CreatedByUser" class="text-danger"></span>
+                        </div>
+                        <button class="btn btn-primary mt-4" type="submit">Create</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="col"></div>
     </div>
 </div>

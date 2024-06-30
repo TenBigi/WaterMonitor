@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WaterMonitor.Data.Model;
 using WaterMonitor.Data;
+using WaterMonitor.Filters;
 
 namespace WaterMonitor.Controllers
 {
@@ -15,18 +16,19 @@ namespace WaterMonitor.Controllers
             _context = context;
         }
 
+        [TokenAuthorizationFilter]
         [HttpPost]
         [Route("recieve-measurements")]
         public IActionResult RecieveMeasurements(StationMeasurement mmt)
         {
-            //osetreni  - duplicitni guid, chybejici stanice
-
-            if (_context.Stations.Count() < mmt.StationId) 
+            Station station = _context.Stations.FirstOrDefault(s => s.Id == mmt.StationId);
+            if (station == null)
             {
-                mmt.StationId = _context.Stations.Count();
+                return StatusCode(400, "Station not found");
             }
 
-            mmt.TimeStamp = DateTime.Now;
+            _context.Stations.Where(s => s.Id == mmt.StationId).FirstOrDefault().LastMeasurementRecievedTime = DateTime.Now;
+
             _context.Measurements.Add(mmt);
             _context.SaveChanges();
 

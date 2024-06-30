@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WaterMonitor.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDb : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,15 +51,33 @@ namespace WaterMonitor.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SmtpConfigs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Server = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Port = table.Column<int>(type: "int", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FromAddress = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SmtpConfigs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Stations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FloodWarningvalue = table.Column<int>(type: "int", nullable: false),
                     DroughWarningValue = table.Column<int>(type: "int", nullable: false),
-                    CreatedByUser = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UnknownStateMinTime = table.Column<int>(type: "int", nullable: false),
+                    CreatedByUser = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -258,6 +276,9 @@ namespace WaterMonitor.Migrations
 
             migrationBuilder.DropTable(
                 name: "Measurements");
+
+            migrationBuilder.DropTable(
+                name: "SmtpConfigs");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
